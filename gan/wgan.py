@@ -1,3 +1,4 @@
+import lightning.pytorch as pl
 import torch
 import torchvision
 import lightning as L
@@ -18,6 +19,17 @@ def get_image_grid(image_tensor, num_images=25, size=(1, 28, 28)):
     image_tensor = (image_tensor + 1) / 2
     image_unflat = image_tensor.detach().cpu()
     return make_grid(image_unflat[:num_images], nrow=5)
+
+class WGanCallback(L.Callback):
+
+    def on_train_epoch_end(self, trainer: L.Trainer, pl_module: L.LightningModule) -> None:
+        # sample noise
+        fake_noise = Generator.get_noise(25, pl_module.hparams.z_dim, device=pl_module.generator.device)
+        
+        # generate images
+        fake = pl_module.generator(fake_noise)
+        grid = get_image_grid(fake)
+        pl_module.logger.experiment.add_image("fake_images", grid, pl_module.global_step)
 
 
 class WGAN(L.LightningModule):

@@ -15,6 +15,7 @@ class Generator(nn.Module):
     def __init__(self, z_dim=10, im_chan=1, hidden_dim=64):
         super(Generator, self).__init__()
         self.z_dim = z_dim
+        self.device_param = nn.Parameter(torch.empty(0))
         # Build the neural network
         self.gen = nn.Sequential(
             self.make_gen_block(z_dim, hidden_dim * 4),
@@ -23,6 +24,10 @@ class Generator(nn.Module):
             self.make_gen_block(hidden_dim, im_chan, kernel_size=4, final_layer=True),
         )
 
+    @property
+    def device(self):
+        return self.device_param.device
+        
 
     @staticmethod
     def get_noise(n_samples, z_dim, device='cpu'):
