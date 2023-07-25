@@ -2,7 +2,7 @@ import os
 import torch
 
 import lightning as L
-from clearml import Task
+#from clearml import Task
 
 from gan.dcgan import DCGAN
 from gan.wgan import WGAN, WGanCallback
@@ -28,10 +28,8 @@ if __name__ == "__main__":
     
     torchsummary.summary(model.generator, input_size=(100,), batch_size=1, device='cpu')
     
-    
-    exit(0)
 
-    Task.init(project_name="GAN-Lighting", task_name='WGAN')
+    #Task.init(project_name="GAN-Lighting", task_name='WGAN')
 
     tensorboard = loggers.TensorBoardLogger(save_dir="./runs")
     trainer = L.Trainer(
@@ -44,8 +42,3 @@ if __name__ == "__main__":
     trainer.fit(model, dm)
 
 
-    X, y= next(iter(dm.train_dataloader))
-    print(f"Model input: {X.size()}")
-    torch_out = model(X.to("cuda"))
-    print(f"Model output: {torch_out.detach().cpu().size()}")
-    
