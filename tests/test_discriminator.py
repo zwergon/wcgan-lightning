@@ -1,7 +1,7 @@
 import unittest
 
-from wcgan.generator import Generator
-from wcgan.discriminator import Discriminator
+from gan.generator import Generator
+from gan.discriminator import Discriminator
 
 class TestDiscriminator(unittest.TestCase):
 

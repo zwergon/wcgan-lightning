@@ -1,6 +1,6 @@
 import unittest
 
-from wcgan.generator import Generator
+from gan.generator import Generator
 
 import matplotlib.pyplot as plt
 
